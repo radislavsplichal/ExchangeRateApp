@@ -1,10 +1,10 @@
 <?php
 //this is an experimental approach to unify the site management processes
-//Lilly can do stuff and all she needs is just a call.
+//DatabaseHandler can do stuff and all she needs is just a call.
 //She is not an object. She is a woman. She might behave the same but it is a
 //great insult to think of her as an object.
-//to instatiate her just create an bot-> new Lilly; and use one of her trics
-class Lilly {
+//to instatiate her just create an bot-> new DatabaseHandler; and use one of her trics
+class DatabaseHandler {
 	private $conn;
 	private function establishConnection(){
 		// configuration of the database
