@@ -13,25 +13,33 @@ $callResults = array_values($callResults);
 array_pop($callResults);
 //var_dump($callResults);
 
-$results;
+$processedResults;
 foreach ($callResults as $key) {
-  $results[] = explode("|",$key);
+  $processedResults[] = explode("|",$key);
   //var_dump($key);
 
 }
 unset($key);
 
 
-
-foreach ($results as $value) {
-  $value[4] = str_replace(",",".",$value[4]);
+foreach ($processedResults as $key => $values) {
+  $processedResults[$key][0] = utf8_encode($values[0]);
+  var_dump($values[0]);
 }
+// foreach ($processedResults as $value) {
+//   $value[4] = doubleval(str_replace(",",".",$value[4]));
+//   //var_dump($value[4]);
+// }
+foreach ($processedResults as $key => $values) {
+  $processedResults[$key][4] = floatval(str_replace(",",".",$values[4]));
+  //var_dump($value[4]);
+}
+// echo $processedResults[2][4];
+
+//var_dump($processedResults);
 
 
-//var_dump($results);
-
-
-return $results;
+return $processedResults;
 }
 
 

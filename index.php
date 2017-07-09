@@ -37,9 +37,9 @@ $bot = new DatabaseHandler;
 //var_dump($processedResults[1]);
 foreach ($processedResults as $values) {
   $values = implode("','", $values);
-  $arguments = "Country,Currency,Amount,Code,ExchangeRate";
+  $arguments = "country,currency,amount,countryCode,exchangeRate";
   //var_dump($values);
-  //$bot->saveObject("kurzy",$arguments,$values);
+  $bot->saveObject("kurzy",$arguments,$values);
 }
 unset($values);
 
