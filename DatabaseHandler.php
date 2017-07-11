@@ -31,6 +31,13 @@ class DatabaseHandler {
 			return $response;
 		}
 	}
+	public function createObject($type,$objectName,$arguments) {
+		$this->establishConnection();
+		// values need to be separated by "','" and concatanated by .
+		$sql= "CREATE $type $objectName ($arguments);";
+		echo $sql;
+		$this->executeQuerry($sql);
+	}
 	public function saveObject ($type,$arguments,$values) {
 		$this->establishConnection();
 		// values need to be separated by "','" and concatanated by .

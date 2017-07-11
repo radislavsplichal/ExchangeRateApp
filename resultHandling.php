@@ -24,7 +24,7 @@ unset($key);
 
 foreach ($processedResults as $key => $values) {
   $processedResults[$key][0] = utf8_encode($values[0]);
-  var_dump($values[0]);
+  //var_dump($values[0]);
 }
 // foreach ($processedResults as $value) {
 //   $value[4] = doubleval(str_replace(",",".",$value[4]));
