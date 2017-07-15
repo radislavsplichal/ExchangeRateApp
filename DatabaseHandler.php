@@ -8,16 +8,13 @@ class DatabaseHandler {
 	private $conn;
 	private function establishConnection(){
 		// configuration of the database
-		$servername = "192.168.0.113";
-		$username = "test";
-		$password = "admin";
-		$dbname = "kurzy";
+		include 'config.php';
 		// Create connection
 		$this->conn = new mysqli($servername, $username, $password, $dbname);
 		// Check connection
 		if ($this->conn->connect_error) {
 			die("Connection failed: " . $this->$conn->connect_error);
-			echo '<div class="alert alert-danger" role="alert">'."Error: " . $sql . "<br>" . $this->$conn->error;
+			throw new Exception('SQL Connection Error'.$sql.$this->$conn->error);
 		}
 	}
 	private function executeQuerry($sql){
@@ -26,7 +23,7 @@ class DatabaseHandler {
 			$response = ['OK'];
 			return $response;
 		} else {
-			echo "Error: " . $sql . "<br>" . $this->conn->error;
+			throw new Exception('SQL Querry Error'.$sql.$this->$conn->error);
 			$response = ['Connection Error',$this->conn->error];
 			return $response;
 		}
