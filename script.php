@@ -1,9 +1,9 @@
 <?php
 $date = date('d.m.Y');
 //save url contents
-function pullCNBdata() {
+function pullCNBdata($date) {
 
-  global $date;
+
   $rawResults = file_get_contents('http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt?date='.$date);
   //if the call fails, throw an exception
   if (!isset($rawResults)){
@@ -16,7 +16,7 @@ function pullCNBdata() {
 // check the data?
 try {
 
-  $rawResults = pullCNBdata();
+  $rawResults = pullCNBdata($date);
 
   //echo $rawResults;
 } catch (Exception $e) {
