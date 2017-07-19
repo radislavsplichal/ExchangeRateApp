@@ -2,112 +2,84 @@
 // This script checks if its the first bussinessday of the Month and if the result is true,
 // it will pull the data from the national bank and save it to the database.
 
-
+$todayDate = new DateTimeImmutable();//Today date value which will be evaluated
+$year = $todayDate->format('Y');// for calculating easter
 //hollidays configuration
+include 'holidays.php';
 
+function checkForWorkdays ($scriptDay) {
+      switch ($scriptDay[2]) {
 
-$date = new DateTimeImmutable();//Today Date Value which will be evaluated
-
-
-//echo $date;
-function shouldTheScriptBeRunToday($holidays,$date,) {
-
-      include 'holidays.php';
-
-
-
-
-
-$i = 0;
-
-$date = new DateTime('first day of this month');
-$evalFormat = $date->format('j.n.D.Y');
-$scriptDay = explode('.',$evalFormat);
-//var_dump($scriptDay);
-
-
-
-while ($i<31) {
-
-$isBussinessDay = true;
-
-$i++;
-
-switch ($scriptDay[2]) {
-  case 'Mon':
-  case 'Tue':
-  case 'Wed':
-  case 'Thr':
-  case 'Fri':
-
-// this function calculates Easter holidays
-
-
-
-
-
-        foreach ($holidays as $key => $value) {
-          if ($holidays[$key][0] == $scriptDay[0] && $holidays[$key][1] == $scriptDay[1]){
-             $isBussinessDay = false;
-          }
-
+        case 'Mon':
+        case 'Tue':
+        case 'Wed':
+        case 'Thr':
+        case 'Fri':
+              return $isBussinessDay = true;
+          break;
+        case 'Sat':
+        case 'Sun':
+              return $isBussinessDay = false;
+          break;
         }
-
-  break;
-  case 'Sat':
-  case 'Sun':
-    //exit
-        $isBussinessDay = false;
-  break;
-
-
-
-
 }
 
-if ($isBussinessDay == true) {
-
-  return $date;
-
+function checkForHolidays($holidays,$scriptDay){
+      foreach ($holidays as $key => $value) {
+              if ($holidays[$key][0] == $scriptDay[0] && $holidays[$key][1] == $scriptDay[1]){
+                return $isBussinessDay = false;
+              }
+            }
+      return $isBussinessDay = true;
 }
 
-$date = $date->modify('+1 day');
-$evalFormat = $date->format('j.n.D.Y');
-$scriptDay = explode('.',$evalFormat);
+//find the correct day for the month
+function findFirstBussinessdayOfTheMonth ($holidays) {
 
+  $date = new DateTimeImmutable('first day of this month');
 
+  $i=0;
+  while ($i<31) {
+  $i++;
 
+  $evalFormat = $date->format('j.n.D.Y');
+  $scriptDay = explode('.',$evalFormat);
 
+  $isBussinessDay = checkForWorkdays($scriptDay);
+  $isNotHoliday = checkForHolidays($holidays,$scriptDay);
 
+    if ($isBussinessDay == true && $isNotHoliday == true) {
+
+      return $date;
+
+    }
+
+  $date = $date->modify('+1 day');
+      }
 }
 
-return $scriptDay;
-
-}
-$scriptDay = isBussinessDay();
-
-
-
+function shouldTheScriptBeRunToday($todayDate,$scriptDay) {
 $scriptDay = $scriptDay->format('j.n.D.Y');
+$todayDate = $todayDate->format('j.n.D.Y');
+
 var_dump($scriptDay);
-//$runDate = implode(".",$scriptDay);
+var_dump($todayDate);
 
+  if ($scriptDay == $todayDate) {
 
-var_dump($date);
-
-
-
-
-if ($scriptDay == $date) {
-
-
-
-include 'DatabaseHandler.php';
-include 'resultHandling.php';
-include 'script.php';
-
+    include 'databaseHandler.php';
+    include 'resultHandling.php';
+    include 'pullData.php';
+    return true;
+  } else {
+    return false;
+  }
 
 }
-
+//the day its ok to run the script
+$scriptDay = findFirstBussinessdayOfTheMonth($holidays);
+$response = shouldTheScriptBeRunToday($todayDate,$scriptDay);
+//work test
+var_dump( $response);
 
  ?>
